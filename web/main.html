@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A#i</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
+        <h2 class="mb-2">A#i</h2>
+        <h1 class="mb-4">Conéctate con tu Música</h1>
+        <div class="input-group mb-3">
+            <input type="text" id="url-input" class="form-control" placeholder="Introduce la URL de la música...">
+            <div class="input-group-append">
+                <button class="btn btn-outline-secondary" onclick="pasteFromClipboard()">Pegar</button>
+            </div>
+        </div>
+        <button class="btn btn-marron mb-3" onclick="sendRequest()">Enviar</button>
+        <div id="loader" class="spinner-border text-primary" role="status" style="display: none;">
+            <span class="sr-only">Cargando...</span>
+        </div>
+    </div>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.4/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        document.getElementById('url-input').addEventListener('keypress', function(event) {
+            if (event.key === 'Enter') {
+                sendRequest();
+            }
+        });
+
+        function pasteFromClipboard() {
+            navigator.clipboard.readText().then(text => {
+                document.getElementById('url-input').value = text;
+            }).catch(err => {
+                console.error('Failed to read clipboard contents: ', err);
+            });
+        }
+
+        function sendRequest() {
+            const url = document.getElementById('url-input').value;
+            if (url) {
+                document.getElementById('loader').style.display = 'block';
+                fetch('http://127.0.0.1:5000/procesar_video', {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ url: url }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    document.getElementById('loader').style.display = 'none';
+                    console.log('Success:', data);
+                    // Aquí puedes manejar la respuesta de tu API
+                })
+                .catch(error => {
+                    document.getElementById('loader').style.display = 'none';
+                    console.error('Error:', error);
+                });
+            }} </script></body>

@@ -1,0 +1,26 @@
+body {
+    background-color: #FAF3E0;
+    color: #4A2F27;
+    font-family: 'Georgia', serif;
+}
+
+h1, h2 {
+    color: #4A2F27;
+}
+
+h2 {
+    font-weight: bold;
+}
+
+#loader {
+    margin-top: 20px;
+}
+
+.btn-marron {
+    background-color: #8B4513;
+    color: white;
+}
+
+.btn-marron:hover {
+    background-color: #6B2F0C;
+}
