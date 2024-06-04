@@ -46,11 +46,12 @@
                 document.getElementById('loader').style.display = 'block';
                 fetch('http://127.0.0.1:5000/procesar_video', {
                     method: 'POST',
-                    mode: 'no-cors',
+                    mode:"no-cors",
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ url: url }),
+                    body: JSON.stringify({ "\"url\"": url }),
+
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -62,4 +63,9 @@
                     document.getElementById('loader').style.display = 'none';
                     console.error('Error:', error);
                 });
-            }} </script></body>
+            }
+        }
+    </script>
+</body>
+</html>
+
