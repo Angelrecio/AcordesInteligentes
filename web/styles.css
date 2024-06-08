@@ -24,3 +24,54 @@ h2 {
 .btn-marron:hover {
     background-color: #6B2F0C;
 }
+
+h4, h5 {
+    color: #4A2F27;
+    font-weight: bold;
+}
+
+#unique-chords-list-guitar, #unique-chords-list-ukulele {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;  /* Aumentar el espaciado entre los acordes únicos */
+    list-style-type: none;
+    padding: 0;
+}
+
+#unique-chords-list-guitar .p-2, #unique-chords-list-ukulele .p-2 {
+    flex: 1 0 30%;
+    text-align: center;
+    background-color: #FFEFD5;
+    border: 1px solid #4A2F27;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+#unique-chords-list-guitar .p-2 img, #unique-chords-list-ukulele .p-2 img {
+    max-width: 100px;
+    height: auto;
+}
+
+#chords-section p {
+    display: inline-block;
+    margin-right: 20px;  /* Aumentar el espaciado entre los acordes */
+}
+
+#chords-section img {
+    max-width: 20px;  /* Ajustar el tamaño de las imágenes de rasgueo */
+    height: auto;
+    vertical-align: middle;
+}
+
+#lyrics {
+    white-space: pre-wrap;
+    background-color: #FFEFD5;
+    border: 1px solid #4A2F27;
+    border-radius: 5px;
+    padding: 20px;
+    overflow-wrap: break-word;
+}
+
+.container {
+    margin-top: 20px;
+}

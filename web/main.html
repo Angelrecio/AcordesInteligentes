@@ -10,7 +10,7 @@
 <body>
     <div class="container d-flex flex-column justify-content-center align-items-center vh-100">
         <h2 class="mb-2">A#i</h2>
-        <h1 class="mb-4">Conéctate con tu Música</h1>
+        <h1 class="mb-4">¿En qué frecuencia vibras hoy?</h1>
         <div class="input-group mb-3">
             <input type="text" id="url-input" class="form-control" placeholder="Introduce la URL de la música...">
             <div class="input-group-append">
@@ -42,30 +42,44 @@
 
         function sendRequest() {
             const url = document.getElementById('url-input').value;
-            if (url) {
-                document.getElementById('loader').style.display = 'block';
-                fetch('http://127.0.0.1:5000/procesar_video', {
-                    method: 'POST',
-                    mode:"no-cors",
-                    headers: {
-                        'Content-Type': 'application/json',
-                    },
-                    body: JSON.stringify({ "\"url\"": url }),
+            var xhr = new XMLHttpRequest();
+            xhr.open("POST", "http://127.0.0.1:5000/procesar_video", true);
+            xhr.setRequestHeader("Content-Type", "application/json;charset=UTF-8");
 
-                })
-                .then(response => response.json())
-                .then(data => {
+            // Mostrar el loader
+            document.getElementById('loader').style.display = 'block';
+
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4) {
+                    // Ocultar el loader
                     document.getElementById('loader').style.display = 'none';
-                    console.log('Success:', data);
-                    // Aquí puedes manejar la respuesta de tu API
-                })
-                .catch(error => {
-                    document.getElementById('loader').style.display = 'none';
-                    console.error('Error:', error);
-                });
-            }
+
+                    if (xhr.status === 200) {
+                        try {
+                            // Parse the JSON response
+                            var jsonResponse = JSON.parse(xhr.responseText);
+                            console.log(jsonResponse);
+
+                            // Store the JSON response in localStorage
+                            localStorage.setItem('apiResponse', JSON.stringify(jsonResponse));
+
+                            // Redirect to another HTML page
+                            window.location.href = 'response.html';
+                        } catch (e) {
+                            console.error('Could not parse JSON:', e);
+                        }
+                    } else {
+                        console.error('Error:', xhr.statusText);
+                    }
+                }
+            };
+
+            var data = JSON.stringify({
+                "url": url
+            });
+
+            xhr.send(data);
         }
     </script>
 </body>
 </html>
-

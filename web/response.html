@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Respuesta de la API</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                
+                <!-- Section to display the unique chords -->
+                <div id="unique-chords-section" class="mb-4">
+                    <div id="unique-chords-guitar" class="mb-3">
+                        <h5>Guitarra:</h5>
+                        <div id="unique-chords-list-guitar" class="d-flex flex-wrap"></div>
+                    </div>
+                    <div id="unique-chords-ukulele">
+                        <h5>Ukelele:</h5>
+                        <div id="unique-chords-list-ukulele" class="d-flex flex-wrap"></div>
+                    </div>
+                </div>
+
+                <!-- Section to display the chords -->
+                <div id="chords-section" class="mb-4">
+                    <h4>Lista de acordes a tocar</h4>
+                    <div id="chords-list"></div>
+                </div>
+                
+                <!-- Section to display the lyrics -->
+                <div id="lyrics-section">
+                    <h4>Letra:</h4>
+                    <div id="lyrics" class="bg-light p-3 rounded"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Retrieve the JSON response from localStorage
+            var jsonResponse = localStorage.getItem('apiResponse');
+            if (jsonResponse) {
+                var data = JSON.parse(jsonResponse);
+                
+                // Display the chords
+                var chordsList = document.getElementById('chords-list');
+                data.acordes.forEach(function(acorde) {
+                    var p = document.createElement('p');
+                    p.innerHTML = acorde[0] + " " + getStrumPattern(acorde[1]);
+                    chordsList.appendChild(p);
+                });
+                
+                // Extract unique chords
+                var uniqueChords = [...new Set(data.acordes.map(acorde => acorde[0]))];
+
+                // Display unique chords for guitar
+                var uniqueChordsListGuitar = document.getElementById('unique-chords-list-guitar');
+                uniqueChords.forEach(function(acorde) {
+                    var div = document.createElement('div');
+                    div.className = 'p-2';
+                    div.innerHTML = `<img src="acordes/guitarra/${acorde}.png" alt="${acorde}" class="img-fluid"><br>${acorde}`;
+                    uniqueChordsListGuitar.appendChild(div);
+                });
+
+                // Display unique chords for ukulele
+                var uniqueChordsListUkulele = document.getElementById('unique-chords-list-ukulele');
+                uniqueChords.forEach(function(acorde) {
+                    var div = document.createElement('div');
+                    div.className = 'p-2';
+                    div.innerHTML = `<img src="acordes/ukelele/${acorde}.png" alt="${acorde}" class="img-fluid"><br>${acorde}`;
+                    uniqueChordsListUkulele.appendChild(div);
+                });
+                
+                // Display the lyrics as a paragraph
+                var lyrics = document.getElementById('lyrics');
+                lyrics.textContent = data.letra;
+            } else {
+                document.getElementById('chords-section').innerText = 'No response found.';
+                document.getElementById('unique-chords-section').innerText = 'No response found.';
+                document.getElementById('lyrics-section').innerText = 'No response found.';
+            }
+        });
+
+        function getStrumPattern(pattern) {
+            switch (pattern) {
+                case '1':
+                    return '<img src="acordes/Up.png" alt="Up" class="img-fluid">-<img src="acordes/Down.png" alt="Down" class="img-fluid">';
+                case '2':
+                    return '<img src="acordes/Down.png" alt="Down" class="img-fluid">-<img src="acordes/Up.png" alt="Up" class="img-fluid">';
+                case '3':
+                    return '<img src="acordes/Up.png" alt="Up" class="img-fluid">-<img src="acordes/Down.png" alt="Down" class="img-fluid"> <img src="acordes/Down.png" alt="Down" class="img-fluid">-<img src="acordes/Up.png" alt="Up" class="img-fluid">';
+                case '4':
+                    return '*';
+                default:
+                    return pattern;
+            }
+        }
+    </script>
+</body>
+</html>
